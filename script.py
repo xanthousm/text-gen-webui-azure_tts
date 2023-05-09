@@ -105,13 +105,14 @@ def output_modifier(string):
         return string
 
     original_string = string
-    string = tts_preprocessor.preprocess(string)
+    # Azure doesn't need preprocess
+    #string = tts_preprocessor.preprocess(string)
 
     if string == '':
         string = '*Empty reply, try regenerating*'
     else:
         output_file = Path(f'extensions/azure_tts/outputs/{shared.character}_{int(time.time())}.wav')
-        ssml_tags=f'<voice name="{speaker_name}"><mstts:express-as style="hopeful" styledegree="2"><prosody pitch="{params['voice_pitch']}" rate="{params['voice_speed']}">'
+        ssml_tags=f'<voice name="{params["speaker"]}"><mstts:express-as style="hopeful" styledegree="2"><prosody pitch="{params["voice_pitch"]}" rate="{params["voice_speed"]}">'
         ssml_string  = f'<speak version="1.0" xmlns="https://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="{params["language"]}">{ssml_tags}{xmlesc(string)}</prosody></mstts:express-as></voice></speak>'
 
         speech_synthesis_result = model.speak_ssml_async(ssml_string).get()
@@ -120,7 +121,7 @@ def output_modifier(string):
             print(f'Outputing audio to {str(output_file)}')
             
             stream = speechsdk.AudioDataStream(speech_synthesis_result)
-            stream.save_to_wav_file(output_file)
+            stream.save_to_wav_file(str(output_file))
             
         elif speech_synthesis_result.reason == speechsdk.ResultReason.Canceled:
             cancellation_details = speech_synthesis_result.cancellation_details
@@ -141,7 +142,7 @@ def output_modifier(string):
 
 def setup():
     global model
-    model = load_model()
+    model = load_synth()
 
 
 def ui():
