@@ -1,2 +1,2 @@
 # azure_tts
-Azure TTS extension for oobabooga/text-generation-webui, based on the silero_tts extension.
+An Azure TTS extension for [text-generation-webui by oobabooga](https://github.com/oobabooga/text-generation-webui), based on the silero_tts extension.
