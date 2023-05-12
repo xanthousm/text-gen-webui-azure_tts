@@ -112,8 +112,8 @@ def output_modifier(string):
         string = '*Empty reply, try regenerating*'
     else:
         output_file = Path(f'extensions/azure_tts/outputs/{shared.character}_{int(time.time())}.wav')
-        ssml_tags=f'<voice name="{params["speaker"]}"><mstts:express-as style="hopeful" styledegree="2"><prosody pitch="{params["voice_pitch"]}" rate="{params["voice_speed"]}">'
-        ssml_string  = f'<speak version="1.0" xmlns="https://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="{params["language"]}">{ssml_tags}{xmlesc(string)}</prosody></mstts:express-as></voice></speak>'
+        ssml_tags=f'<voice name="{params["speaker"]}"><prosody pitch="{params["voice_pitch"]}" rate="{params["voice_speed"]}">'
+        ssml_string  = f'<speak version="1.0" xmlns="https://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="{params["language"]}">{ssml_tags}{xmlesc(string)}</prosody></voice></speak>'
 
         speech_synthesis_result = model.speak_ssml_async(ssml_string).get()
     
